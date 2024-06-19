@@ -95,6 +95,7 @@ app.delete("/api/cohorts/:cohortId", async (req, res) => {
 });
 
 app.post("/api/students", async (req, res) => {
+  
   try {
     const createStudent = await Student.create(req.body);
     res.status(201).json(createStudent);
@@ -103,8 +104,24 @@ app.post("/api/students", async (req, res) => {
   }
 });
 
+app.get("/api/students/cohort/:cohortId", async (req, res) =>{
+  const { cohortId } = req.params;
+  try {
+    const getStudents = await Student.find({cohort: cohortId})
+    .populate("cohort");
+    console.log(res)
+    res.status(200).json(getStudents);
+  } catch (error) {
+    console.log(error);
+  } 
+
+
+}
+)
+
 app.get("/api/students", (req, res) => {
-  Student.find({})
+  Student.find()
+  .populate("cohort")
     .then((students) => {
       console.log("Retrieved students ->", students);
       res.json(students);
@@ -117,8 +134,11 @@ app.get("/api/students", (req, res) => {
 
 app.get("/api/students/:studentId", async (req, res) => {
   const { studentId } = req.params;
+  
   try {
-    const getOneStudent = await Student.findById(studentId);
+    const getOneStudent = await Student.findById(studentId)
+    .populate("cohort");
+    
     res.status(200).json(getOneStudent);
   } catch (error) {
     console.log(error);

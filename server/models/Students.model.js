@@ -1,42 +1,52 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-ObjectId = Schema.ObjectId;
 
 const studentSchema = new Schema ({
 
 firstName: {
-    type: String
+    type: String,
+    required: true
 },
 lastName:{
-    type:String
+    type:String,
+    required: true
 },
 email:{
-    type:String
+    type:String,
+    required: true,
+    unique: true
 },
 phone:{
-    type: String
+    type: String,
+    required:true
 },
 linkedinUrl:{
-    type: String
+    type: String,
+    default: ""
 },
 languages:{
-    type:Array
+    type:[String],
+    enum: ["English", "Spanish", "French", "German", "Portuguese", "Dutch", "Other"]
 },
 program:{
-    type: String
+    type: String,
+    enum: ["Web Dev", "UX/UI", "Data Analytics", "Cybersecurity"]
 },
 background:{
-    type: String
+    type: String,
+    default: ""
 },
 image:{
     type: String,
     default:" https://i.imgur.com/r8bo8u7.png"
 },
 cohort:{
-    type: ObjectId
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Cohort"
+
 },
 projects:{
-    type: Array
+    type: [String]
 } 
 
 

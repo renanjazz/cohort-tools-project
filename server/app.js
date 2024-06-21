@@ -6,7 +6,8 @@ const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const PORT = 5005;
 const cors = require("cors");
-const Student = require("./models/Students.model");
+require("dotenv").config();
+const { isAuthenticated } = require("./middleware/jwt.middleware");
 
 const {
   errorHandler,
@@ -50,6 +51,8 @@ const studentRoutes = require("./routes/students.routes");
 app.use("/student", studentRoutes);
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
+const userRoutes = require("./routes/users.routes");
+app.use("/users", isAuthenticated, userRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

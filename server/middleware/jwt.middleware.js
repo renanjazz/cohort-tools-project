@@ -1,21 +1,20 @@
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const isAuthenticated = (req, res, next) => {
   try {
-    if (
-      req.headers.authorization.split(" ")[0] === "Bearer" &&
-      req.headers.authorization.split(" ")[1]
-    ) {
-      const token = req.headers.authorization.split(" ")[1];
-      const theDecodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
+    const token = req.headers.authorization.split(" ")[1];
+    console.log(token);
 
-      req.payload = theDecodedToken;
+    console.log("process.env", process.env.TOKEN_SECRET)
+    const payload = jwt.verify(token, process.env.TOKEN_SECRET);
 
-      next();
-    } else {
-      next();
-    }
+
+    req.payload = payload;
+
+    next();
   } catch (error) {
+    console.log(error)
     res.status(401).json("token not provided or not valid");
   }
 };

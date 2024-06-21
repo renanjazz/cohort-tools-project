@@ -38,23 +38,34 @@ router.post("/login", async (req, res) => {
       );
       if (passwordMatch) {
         const loggedInUser = {
-        _id: foundUser._id,
-        user: foundUser.name
-        }
-        const authToken = jwt.sign(
-            loggedInUser,
-            "tokenSecret",
-            { algorithm: "HS256", expiresIn: "6h" }
-        );
-        res.status(200).json({message: "Login successful", authToken})
-      }else{
-        res.status(500).json({errorMessage: "Invalid password"})
+          _id: foundUser._id,
+          user: foundUser.name,
+        };
+        const authToken = jwt.sign(loggedInUser, process.env.TOKEN_SECRET, {
+          algorithm: "HS256",
+          expiresIn: "6h",
+        });
+        res.status(200).json({ message: "Login successful", authToken });
+      } else {
+        res.status(500).json({ errorMessage: "Invalid password" });
       }
-    }else{
-        res.status(500).json({errorMessage: "Invalid email"})
+    } else {
+      res.status(500).json({ errorMessage: "Invalid email" });
     }
   } catch (error) {
     console.log(error);
   }
 });
+
+router.get("/verify", isAuthenticated, (req, res) => {
+  if (req.payload) {
+    console.log("req payload in status 200", req.payload)
+    res.status(200).json({ message: "Valid Token", user: req.payload });
+  } else {
+    console.log("req payload in status 401", req.payload)
+
+    res.status(401).json({ errorMessage: "Invalid Token" });
+  }
+});
+
 module.exports = router;

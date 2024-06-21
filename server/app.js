@@ -42,12 +42,13 @@ app.get('/docs', (req, res) => {
 	res.sendFile(__dirname + '/views/docs.html');
 });
 
-app.post('/api/cohorts', async (req, res) => {
+app.post('/api/cohorts', async (req, res, next) => {
 	try {
 		const createCohort = await Cohort.create(req.body);
 		res.status(201).json(createCohort);
 	} catch (error) {
 		console.log(error);
+    next(error);
 	}
 });
 

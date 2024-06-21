@@ -47,11 +47,11 @@ function CohortCreatePage() {
     };
 
     axios
-      .post(`${API_URL}/api/cohorts`, requestBody)
+      .post(`${API_URL}/cohort/api/cohorts`, requestBody)
       .then((response) => {
         const newCohort = response.data;
 
-        navigate(`/cohorts/details/${newCohort._id}`);
+        navigate(`/cohort/cohorts/details/${newCohort._id}`);
       })
       .catch((error) => console.log(error));
   };

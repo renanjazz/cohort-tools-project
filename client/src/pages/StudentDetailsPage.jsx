@@ -15,7 +15,7 @@ function StudentDetailsPage() {
   useEffect(() => {
     const getStudent = () => {
       axios
-        .get(`${API_URL}/api/students/${studentId}`)
+        .get(`${API_URL}/student/api/students/${studentId}`)
         .then((response) => {
           const oneStudent = response.data;
           setStudent(oneStudent);

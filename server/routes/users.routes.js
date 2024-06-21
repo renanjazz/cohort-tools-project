@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const userModel = require("../models/User.model");
 
-router.get("/api/user/:id", async (req, res) => {
+router.get("/api/users/:id", async (req, res) => {
   const { id } = req.params;
 
   try {

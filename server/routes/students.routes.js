@@ -1,4 +1,4 @@
-const Cohort = require('../models/Students.model');
+const Student = require('../models/Students.model');
 const router = require("express").Router()
 
 
@@ -19,7 +19,7 @@ router.get('/api/students/cohort/:cohortId', async (req, res, next) => {
 		const getStudents = await Student.find({ cohort: cohortId }).populate(
 			'cohort'
 		);
-		console.log(res);
+		console.log(getStudents);
 		res.status(200).json(getStudents);
 	} catch (error) {
 		console.log(error);

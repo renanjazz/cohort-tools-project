@@ -4,17 +4,15 @@ require("dotenv").config();
 const isAuthenticated = (req, res, next) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
-    console.log(token);
+    console.log(token)
 
-    console.log("process.env", process.env.TOKEN_SECRET)
     const payload = jwt.verify(token, process.env.TOKEN_SECRET);
-
 
     req.payload = payload;
 
     next();
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(401).json("token not provided or not valid");
   }
 };

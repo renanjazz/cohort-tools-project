@@ -56,7 +56,7 @@ function CohortEditPage() {
 
     axios
       .put(`${API_URL}/cohort/api/cohorts/${cohortId}`, requestBody)
-      .then(() => navigate(`/cohort/cohorts/details/${cohortId}`))
+      .then(() => navigate(`/cohorts/details/${cohortId}`))
       .catch((error) => console.log(error));
   };
 

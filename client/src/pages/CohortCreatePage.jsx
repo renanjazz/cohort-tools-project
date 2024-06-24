@@ -51,7 +51,7 @@ function CohortCreatePage() {
       .then((response) => {
         const newCohort = response.data;
 
-        navigate(`/cohort/cohorts/details/${newCohort._id}`);
+        navigate(`/cohorts/details/${newCohort._id}`);
       })
       .catch((error) => console.log(error));
   };

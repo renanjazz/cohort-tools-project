@@ -7,8 +7,6 @@ import { AuthContext } from "../context/auth.context";
 // Import the string from the .env with URL of the API/server - http://localhost:5005
 const API_URL = import.meta.env.VITE_API_URL;
 
-
-
 function UserProfilePage() {
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -16,34 +14,55 @@ function UserProfilePage() {
   const [errorMessage, setErrorMessage] = useState(undefined);
 
   useEffect(() => {
-    const getStudent = () => {
+    // const getStudent = () => {
+    //   const storedToken = localStorage.getItem("authToken");
+    console.log("here is the user", user);
+
+    //   if (storedToken) {
+    //     axios
+    //     .get(
+    //       `${API_URL}/users/api/users/${user._id}`,
+    //       { headers: { authorization: `Bearer ${storedToken}` }}
+    //       )
+    //       .then((response) => {
+    //         setUserProfile(response.data);
+    //         setLoading(false);
+    //       })
+    //       .catch((error) => {
+    //         const errorDescription = error.response.data.message;
+    //         setErrorMessage(errorDescription);
+    //       });
+    //     }
+    //     else {
+    //       setErrorMessage("User not logged in");
+    //     }
+    // };
+
+    // getStudent();
+
+    const getStudent = async (req, res) => {
       const storedToken = localStorage.getItem("authToken");
+      console.log("this is before fetching", storedToken, user);
+      try {
+        const res = await axios.get(
+          `${API_URL}/users/api/users/${user.user._id}`,
+          {
+            headers: { authorization: `Bearer ${storedToken}` },
+          }
+        );
 
-      if (storedToken) {
-        axios
-        .get(
-          `${API_URL}/users/api/users/${user._id}`,
-          { headers: { Authorization: `Bearer ${storedToken}` }}
-          )
-          .then((response) => {
-            setUserProfile(response.data);
-            setLoading(false);
-          })
-          .catch((error) => {
-            const errorDescription = error.response.data.message;
-            setErrorMessage(errorDescription);
-          });
-        }
-        else {
-          setErrorMessage("User not logged in");
-        }
+        setUserProfile(res.data.findUser);
+        setLoading(false);
+        console.log("here is the data from the fetch",res.data)
+      } catch (error) {
+        console.log(error);
+      }
     };
-
     getStudent();
-  }, [user._id]);
+  }, []);
 
   if (errorMessage) return <div>{errorMessage}</div>;
-  
+
   if (loading) return <div>Loading...</div>;
 
   return (
@@ -53,12 +72,14 @@ function UserProfilePage() {
           <>
             {/* <img className="w-32 h-32 rounded-full object-cover mb-4" src={student.image} alt="profile-photo" /> */}
             <img
-            src={placeholderImage}
-            alt="profile-photo"
-            className="rounded-full w-32 h-32 object-cover border-2 border-gray-300"
-          />            
-            <h1 className="text-2xl mt-4 font-bold absolute">{userProfile.name}</h1>
-            
+              src={placeholderImage}
+              alt="profile-photo"
+              className="rounded-full w-32 h-32 object-cover border-2 border-gray-300"
+            />
+            <h1 className="text-2xl mt-4 font-bold absolute">
+              {userProfile.name}
+            </h1>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-24 mb-4 border-b pb-4">
               <p className="text-left mb-2 border-b pb-2">
                 <strong>Email:</strong> {userProfile.email}
@@ -67,7 +88,6 @@ function UserProfilePage() {
           </>
         )}
       </div>
-      
     </div>
   );
 }
